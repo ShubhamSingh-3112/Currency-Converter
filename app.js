@@ -1,4 +1,4 @@
-const BASE_URL ="https://raw.githubusercontent.com/WoXy-Sensei/currency-api/main/api";
+const BASE_URL ="https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies";
 
 const dropdowns = document.querySelectorAll(".dropdown select");
 const btn = document.querySelector("button");
@@ -31,17 +31,20 @@ const updateFlag = (element) => {
 
 const updateData = async () =>{
     let amount = document.querySelector(".amount input").value;
-    if(amount===""||amount<1)
+    if(amount===""||amount<0)
     {
         amount = 1;
         alert("Enter Valid Amount")
     }
     let fromCur = document.querySelector(".from select").value;
     let toCur = document.querySelector(".to select").value;
-    const newURL = `${BASE_URL}/${fromCur}_${toCur}.json`;
+    let smallfrom = fromCur.toLowerCase();
+    let smallto = toCur.toLowerCase()
+    
+    const newURL = `${BASE_URL}/${smallfrom}.json`;
     let response = await fetch(newURL);
     let data = await response.json();
-    let rate = data.rate;
+    let rate = data[smallfrom][smallto];
     let finalamt = rate * amount;
     msg.innerText = `${amount} ${fromCur} = ${finalamt} ${toCur}`;
 }
